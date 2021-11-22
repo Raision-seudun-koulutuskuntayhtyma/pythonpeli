@@ -37,18 +37,33 @@ class App:
         self.kuva_x = (self.nayton_koko[0] - self.kuvan_koko[0]) / 2
         self.kuva_y = 50
         self.max_kuva_y = (self.nayton_koko[1] - self.kuvan_koko[1])
+        self.pallon_asento = 0
         self.putoamisvauhti = 1
+        self.x_impulssi = 0
+        self.y_impulssi = 0
+        self.a_impulssi = 0
  
     def tapahtuma(self, event):
         if event.type == pygame.QUIT:
             self._running = False
         elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT:
-                self.kuva_x -= 10
+            if event.key == pygame.K_ESCAPE:
+                self._running = False
+            elif event.key == pygame.K_LEFT:
+                self.x_impulssi -= 5
+                self.a_impulssi += 3
             elif event.key == pygame.K_RIGHT:
-                self.kuva_x += 10
+                self.x_impulssi += 5
+                self.a_impulssi -= 3
+            elif event.key == pygame.K_UP:
+                self.y_impulssi -= 5
+            elif event.key == pygame.K_DOWN:
+                self.y_impulssi += 5
+            elif event.key == pygame.K_SPACE:
+                self.y_impulssi -= 20
 
     def pelilogiikka(self):
+        # Painovoima ja kimpoaminen alareunasta
         self.putoamisvauhti += 0.2
         if self.putoamisvauhti > 10:
             self.putoamisvauhti = 10
@@ -56,9 +71,20 @@ class App:
             self.putoamisvauhti = -self.putoamisvauhti
         self.kuva_y += self.putoamisvauhti
 
+        # Nuolinäppäimistä tulevat impulssit
+        self.kuva_x += self.x_impulssi
+        self.kuva_y += self.y_impulssi
+        self.pallon_asento = (self.pallon_asento + self.a_impulssi) % 360
+        self.x_impulssi *= 0.95
+        self.y_impulssi *= 0.95
+        self.a_impulssi *= 0.97
+
     def renderointi(self):
         self.naytto.fill(TAUSTAVARI)
-        self.naytto.blit(self.kuva, (self.kuva_x, self.kuva_y))
+        pyoritetty_kuva = pygame.transform.rotate(self.kuva, self.pallon_asento)
+        keskipiste = self.kuva.get_rect(topleft=(self.kuva_x, self.kuva_y)).center
+        laatikko = pyoritetty_kuva.get_rect(center=keskipiste)
+        self.naytto.blit(pyoritetty_kuva, laatikko.topleft)
         pygame.display.flip()
         self.kello.tick(60)  # 60 fps
 
