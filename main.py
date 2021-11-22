@@ -1,5 +1,7 @@
 import pygame
 
+TAUSTAVARI = (180, 180, 240)  # (Red, Green, Blue), 0...255
+
 
 def main():
     app = App()
@@ -10,7 +12,7 @@ class App:
     def __init__(self):
         self._running = True
         self.naytto = None
-        self.size = (self.weight, self.height) = (800, 600)
+        self.nayton_koko = (self.weight, self.height) = (800, 600)
  
     def on_execute(self):
         if self.on_init() is False:
@@ -26,11 +28,16 @@ class App:
 
     def on_init(self):
         pygame.init()
-        self.naytto = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
+        self.kello = pygame.time.Clock()
+        self.naytto = pygame.display.set_mode(
+            self.nayton_koko,
+            pygame.HWSURFACE | pygame.DOUBLEBUF)
         self._running = True
-        self.kuva = pygame.image.load("pallo.png")
-        self.kuva_x = 50
+        self.kuva = pygame.image.load("pallo128.png")
+        self.kuvan_koko = self.kuva.get_size()
+        self.kuva_x = (self.nayton_koko[0] - self.kuvan_koko[0]) / 2
         self.kuva_y = 50
+        self.max_kuva_y = (self.nayton_koko[1] - self.kuvan_koko[1])
         self.putoamisvauhti = 1
  
     def tapahtuma(self, event):
@@ -43,16 +50,18 @@ class App:
                 self.kuva_x += 10
 
     def pelilogiikka(self):
-        if self.kuva_y > 150 and self.putoamisvauhti > 0:
-            self.putoamisvauhti = -self.putoamisvauhti
-        elif self.kuva_y <= 0 and self.putoamisvauhti < 0:
+        self.putoamisvauhti += 0.2
+        if self.putoamisvauhti > 10:
+            self.putoamisvauhti = 10
+        if self.kuva_y > self.max_kuva_y and self.putoamisvauhti > 0:
             self.putoamisvauhti = -self.putoamisvauhti
         self.kuva_y += self.putoamisvauhti
 
     def renderointi(self):
-        self.naytto.fill((100, 100, 200))
+        self.naytto.fill(TAUSTAVARI)
         self.naytto.blit(self.kuva, (self.kuva_x, self.kuva_y))
         pygame.display.flip()
+        self.kello.tick(60)  # 60 fps
 
     def on_cleanup(self):
         pygame.quit()
