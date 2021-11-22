@@ -15,8 +15,7 @@ class App:
         self.nayton_koko = (self.weight, self.height) = (800, 600)
  
     def on_execute(self):
-        if self.on_init() is False:
-            self._running = False
+        self.alustus()
  
         while self._running:
             for event in pygame.event.get():
@@ -24,9 +23,9 @@ class App:
             self.pelilogiikka()
             self.renderointi()
 
-        self.on_cleanup()
+        self.lopetus()
 
-    def on_init(self):
+    def alustus(self):
         pygame.init()
         self.kello = pygame.time.Clock()
         self.naytto = pygame.display.set_mode(
@@ -63,7 +62,7 @@ class App:
         pygame.display.flip()
         self.kello.tick(60)  # 60 fps
 
-    def on_cleanup(self):
+    def lopetus(self):
         pygame.quit()
  
 
