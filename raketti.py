@@ -41,14 +41,17 @@ class Peli:
         self.raketin_kulma = 0
         self.raketin_pyorimisvauhti = 0
         self.raketin_sijainti = (400, 300)
-        self.jutun_kulma = 0
-        self.jutun_pyorimisvauhti = random() - 0.5
-        self.jutun_sijainti = (randint(0, self.leveys), randint(0, self.korkeus))
+        self.arvo_uusi_juttu()
         self.vauhti = 0
         self.hiiren_nappi_pohjassa = False
         self.voima = 0
         self.voimanlisays = False
         self.laukaisu = False
+
+    def arvo_uusi_juttu(self):        
+        self.jutun_kulma = 0
+        self.jutun_pyorimisvauhti = random() - 0.5
+        self.jutun_sijainti = (randint(0, self.leveys), randint(0, self.korkeus))
 
     def tapahtuma(self, event):
         if event.type == pygame.QUIT:
@@ -103,6 +106,12 @@ class Peli:
             uusi_y = self.raketin_sijainti[1] + vauhti_y
             self.raketin_sijainti = (uusi_x, uusi_y)
             self.vauhti *= 0.97
+
+        etaisyys_2 = (
+            (self.raketin_sijainti[0] - self.jutun_sijainti[0])**2 +
+            (self.raketin_sijainti[1] - self.jutun_sijainti[1])**2)
+        if etaisyys_2 < 5000:
+            self.arvo_uusi_juttu()
 
     def renderointi(self):
         # Tausta
