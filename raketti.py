@@ -52,6 +52,7 @@ class Peli:
         self.laukaisu = False
         self.pisteet = 0
         self.aikaa_jaljella = 20
+        self.edellinen_vahennys = self.aikaa_jaljella
 
     def arvo_uusi_juttu(self):        
         self.jutun_kulma = 360 * random()
@@ -91,6 +92,10 @@ class Peli:
     def pelilogiikka(self):
         if self.aikaa_jaljella > 0:
             self.aikaa_jaljella -= 1/FPS
+            aikaa_vahennyksesta = self.edellinen_vahennys - self.aikaa_jaljella
+            if aikaa_vahennyksesta >= 5:
+                self.pisteet -= 1
+                self.edellinen_vahennys = self.aikaa_jaljella
         else:
             self.aikaa_jaljella = 0
             return
@@ -118,12 +123,14 @@ class Peli:
             uusi_x = self.raketin_sijainti[0] + vauhti_x
             uusi_y = self.raketin_sijainti[1] + vauhti_y
             self.raketin_sijainti = (uusi_x, uusi_y)
-            self.vauhti *= 0.97
+            self.vauhti *= 0.99
 
         etaisyys_2 = (
             (self.raketin_sijainti[0] - self.jutun_sijainti[0])**2 +
             (self.raketin_sijainti[1] - self.jutun_sijainti[1])**2)
         if etaisyys_2 < 10000:
+            # Osui
+            self.edellinen_vahennys = self.aikaa_jaljella
             self.pisteet += 1
             self.aikaa_jaljella += 2
             self.arvo_uusi_juttu()
