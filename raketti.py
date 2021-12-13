@@ -142,7 +142,7 @@ class Peli:
             # Osui
             self.edellinen_vahennys = self.aikaa_jaljella
             self.pisteet += 1
-            self.aikaa_jaljella += 2
+            self.aikaa_jaljella += 1
             self.arvo_uusi_juttu()
 
     def renderointi(self):
