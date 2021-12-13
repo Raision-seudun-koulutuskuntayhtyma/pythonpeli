@@ -6,6 +6,7 @@ import pygame
 TAUSTAVARI = (180, 180, 240)  # (Red, Green, Blue), 0...255
 FPS = 60  # frames per second
 
+
 def main():
     peli = Peli()
     peli.aja()
@@ -18,7 +19,7 @@ class Peli:
         self.leveys = 1280
         self.korkeus = 720
         self.nayton_koko = (self.leveys, self.korkeus)
- 
+
     def aja(self):
         self.alustus()
         while self.ajossa:
@@ -54,7 +55,7 @@ class Peli:
         self.aikaa_jaljella = 20
         self.edellinen_vahennys = self.aikaa_jaljella
 
-    def arvo_uusi_juttu(self):        
+    def arvo_uusi_juttu(self):
         self.jutun_kulma = 360 * random()
         self.jutun_pyorimisvauhti = 2 * (random() - 0.5)
         self.jutun_sijainti = (randint(0, self.leveys), randint(0, self.korkeus))
@@ -87,7 +88,7 @@ class Peli:
                 self.raketin_pyorimisvauhti = 0
             elif event.key == pygame.K_SPACE:
                 self.voimanlisays = False
-                self.laukaisu = True           
+                self.laukaisu = True
 
     def pelilogiikka(self):
         if self.aikaa_jaljella > 0:
@@ -189,7 +190,7 @@ class Peli:
 
     def lopetus(self):
         pygame.quit()
- 
+
 
 if __name__ == "__main__" :
     main()
