@@ -75,7 +75,7 @@ class Peli:
                 self.raketin_kulmanop_impulssi = 1
             elif event.key == pygame.K_RIGHT:
                 self.raketin_kulmanop_impulssi = -1
-            elif event.key == pygame.K_SPACE:
+            elif event.key in (pygame.K_SPACE, pygame.K_UP):
                 self.voimanlisays = True
         # Näppäimen nosto ylös  ----------------------------------
         elif event.type == pygame.KEYUP:
@@ -87,7 +87,7 @@ class Peli:
                 self.vaihda_kokoruututila()
             elif event.key in (pygame.K_LEFT, pygame.K_RIGHT):
                 self.raketin_kulmanop_impulssi = 0
-            elif event.key == pygame.K_SPACE:
+            elif event.key in (pygame.K_SPACE, pygame.K_UP):
                 self.voimanlisays = False
                 self.laukaisu = True
 
