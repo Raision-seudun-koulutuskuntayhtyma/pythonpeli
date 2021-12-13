@@ -38,7 +38,7 @@ class Peli:
         self.raketti_pieni = pygame.transform.rotozoom(self.raketti_iso, 0, 0.25)
         self.juttu_iso = pygame.image.load("astronautti.png")
         self.juttu_pieni = pygame.transform.rotozoom(self.juttu_iso, 0, 0.125)
-        self.kulma = 0
+        self.raketin_kulma = 0
         self.pyorimisvauhti = 0
         self.raketin_sijainti = (400, 300)
         self.jutun_sijainti = (randint(0, self.leveys), randint(0, self.korkeus))
@@ -81,7 +81,7 @@ class Peli:
             self.raketin_sijainti = pygame.mouse.get_pos()
 
         if self.pyorimisvauhti != 0:
-            self.kulma = (self.kulma + self.pyorimisvauhti) % 360
+            self.raketin_kulma = (self.raketin_kulma + self.pyorimisvauhti) % 360
 
         if self.voimanlisays:
             self.voima = min(self.voima + 2, 100)
@@ -92,8 +92,8 @@ class Peli:
             self.laukaisu = False
 
         if self.vauhti > 0.1:
-            vauhti_x = -self.vauhti * math.sin(self.kulma / 180 * math.pi)
-            vauhti_y = -self.vauhti * math.cos(self.kulma / 180 * math.pi)
+            vauhti_x = -self.vauhti * math.sin(self.raketin_kulma / 180 * math.pi)
+            vauhti_y = -self.vauhti * math.cos(self.raketin_kulma / 180 * math.pi)
             uusi_x = self.raketin_sijainti[0] + vauhti_x
             uusi_y = self.raketin_sijainti[1] + vauhti_y
             self.raketin_sijainti = (uusi_x, uusi_y)
@@ -103,11 +103,11 @@ class Peli:
         # Tausta
         self.naytto.fill(TAUSTAVARI)
         # Juttu
-        kuva = pygame.transform.rotozoom(self.juttu_pieni, self.kulma, 1)
+        kuva = pygame.transform.rotozoom(self.juttu_pieni, self.raketin_kulma, 1)
         laatikko = kuva.get_rect(center=self.jutun_sijainti)
         self.naytto.blit(kuva, laatikko.topleft)
         # Raketti
-        kuva = pygame.transform.rotozoom(self.raketti_pieni, self.kulma, 1)
+        kuva = pygame.transform.rotozoom(self.raketti_pieni, self.raketin_kulma, 1)
         laatikko = kuva.get_rect(center=self.raketin_sijainti)
         self.naytto.blit(kuva, laatikko.topleft)
         # Voimapalkki
@@ -116,8 +116,8 @@ class Peli:
         # Suuntapallo
         suuntapallo_x = self.leveys - 35
         suuntapallo_y = self.korkeus - 35
-        suuntavektori_x = -30 * math.sin(self.kulma / 180 * math.pi)
-        suuntavektori_y = -30 * math.cos(self.kulma / 180 * math.pi)
+        suuntavektori_x = -30 * math.sin(self.raketin_kulma / 180 * math.pi)
+        suuntavektori_y = -30 * math.cos(self.raketin_kulma / 180 * math.pi)
         pygame.draw.circle(self.naytto, (0, 0, 0), (suuntapallo_x, suuntapallo_y), 30)
         pygame.draw.line(self.naytto, (255, 0, 0),
                         (suuntapallo_x, suuntapallo_y),
