@@ -1,3 +1,5 @@
+import math
+
 import pygame
 
 TAUSTAVARI = (180, 180, 240)  # (Red, Green, Blue), 0...255
@@ -35,6 +37,7 @@ class Peli:
         self.kulma = 0
         self.pyorimisvauhti = 0
         self.sijainti = (400, 300)
+        self.vauhti = 0
         self.hiiren_nappi_pohjassa = False
         self.voima = 0
         self.voimanlisays = False
@@ -75,9 +78,16 @@ class Peli:
             self.voima = min(self.voima + 1, 100)
 
         if self.laukaisu:
-            print(f"Pam! {self.voima}")
+            self.vauhti = self.voima
             self.voima = 0
             self.laukaisu = False
+
+        if self.vauhti != 0:
+            vauhti_x = -self.vauhti * math.sin(self.kulma / 180 * math.pi)
+            vauhti_y = -self.vauhti * math.cos(self.kulma / 180 * math.pi)
+            uusi_x = self.sijainti[0] + vauhti_x
+            uusi_y = self.sijainti[1] + vauhti_y
+            self.sijainti = (uusi_x, uusi_y)
 
     def renderointi(self):
         self.naytto.fill(TAUSTAVARI)
@@ -86,6 +96,14 @@ class Peli:
         self.naytto.blit(kuva, laatikko.topleft)
         pygame.draw.rect(self.naytto, (0, 0, 0), (2, self.korkeus - 19, 102, 17))
         pygame.draw.rect(self.naytto, (0, 255, 0), (3, self.korkeus - 18, self.voima, 15))
+        suuntapallo_x = self.leveys - 35
+        suuntapallo_y = self.korkeus - 35
+        suuntavektori_x = -30 * math.sin(self.kulma / 180 * math.pi)
+        suuntavektori_y = -30 * math.cos(self.kulma / 180 * math.pi)
+        pygame.draw.circle(self.naytto, (0, 0, 0), (suuntapallo_x, suuntapallo_y), 30)
+        pygame.draw.line(self.naytto, (255, 0, 0),
+                        (suuntapallo_x, suuntapallo_y),
+                        (suuntapallo_x + suuntavektori_x, suuntapallo_y + suuntavektori_y))
         pygame.display.flip()
         self.kello.tick(60)  # 60 fps (frames per second)
 
