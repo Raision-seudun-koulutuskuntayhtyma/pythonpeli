@@ -43,7 +43,7 @@ class Peli:
     def pelimuuttujien_alustus(self):
         self.raketin_kulma = 0
         self.raketin_pyorimisvauhti = 0
-        self.raketin_sijainti = (400, 300)
+        self.raketin_sijainti = (self.leveys / 2, self.korkeus / 2)
         self.arvo_uusi_juttu()
         self.vauhti = 0
         self.hiiren_nappi_pohjassa = False
