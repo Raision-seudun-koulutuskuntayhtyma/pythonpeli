@@ -14,8 +14,8 @@ class Peli:
     def __init__(self):
         self.ajossa = True
         self.naytto = None
-        self.leveys = 800
-        self.korkeus = 600
+        self.leveys = 1280
+        self.korkeus = 720
         self.nayton_koko = (self.leveys, self.korkeus)
  
     def aja(self):
@@ -30,6 +30,7 @@ class Peli:
     def alustus(self):
         pygame.init()
         self.kello = pygame.time.Clock()
+        self.kokoruutu = False
         self.naytto = pygame.display.set_mode(
             self.nayton_koko, pygame.HWSURFACE | pygame.DOUBLEBUF)
         self.kuva_iso = pygame.image.load("rocket_883.png")
@@ -61,11 +62,15 @@ class Peli:
                 self.voimanlisays = True
         # Näppäimen nosto ylös  ----------------------------------
         elif event.type == pygame.KEYUP:
-            if event.key in (pygame.K_LEFT, pygame.K_RIGHT):
+            if event.key == pygame.K_ESCAPE:
+                self.ajossa = False
+            elif event.key == pygame.K_F11:
+                self.vaihda_kokoruututila()
+            elif event.key in (pygame.K_LEFT, pygame.K_RIGHT):
                 self.pyorimisvauhti = 0
             elif event.key == pygame.K_SPACE:
                 self.voimanlisays = False
-                self.laukaisu = True
+                self.laukaisu = True           
 
     def pelilogiikka(self):
         if self.hiiren_nappi_pohjassa:
@@ -107,6 +112,16 @@ class Peli:
                         (suuntapallo_x + suuntavektori_x, suuntapallo_y + suuntavektori_y))
         pygame.display.flip()
         self.kello.tick(60)  # 60 fps (frames per second)
+
+    def vaihda_kokoruututila(self):
+        self.kokoruutu = not self.kokoruutu
+        if self.kokoruutu:
+            pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        else:
+            pygame.display.set_mode(self.nayton_koko)
+        naytto = pygame.display.get_surface()
+        self.leveys = naytto.get_width()
+        self.korkeus = naytto.get_height()
 
     def lopetus(self):
         pygame.quit()
