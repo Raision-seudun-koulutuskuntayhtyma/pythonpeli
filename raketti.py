@@ -33,8 +33,8 @@ class Peli:
         self.kokoruutu = False
         self.naytto = pygame.display.set_mode(
             self.nayton_koko, pygame.HWSURFACE | pygame.DOUBLEBUF)
-        self.kuva_iso = pygame.image.load("rocket_883.png")
-        self.kuva_pieni = pygame.transform.rotozoom(self.kuva_iso, 0, 0.25)
+        self.raketti_iso = pygame.image.load("rocket_883.png")
+        self.raketti_pieni = pygame.transform.rotozoom(self.raketti_iso, 0, 0.25)
         self.kulma = 0
         self.pyorimisvauhti = 0
         self.sijainti = (400, 300)
@@ -97,7 +97,7 @@ class Peli:
 
     def renderointi(self):
         self.naytto.fill(TAUSTAVARI)
-        kuva = pygame.transform.rotozoom(self.kuva_pieni, self.kulma, 1)
+        kuva = pygame.transform.rotozoom(self.raketti_pieni, self.kulma, 1)
         laatikko = kuva.get_rect(center=self.sijainti)
         self.naytto.blit(kuva, laatikko.topleft)
         pygame.draw.rect(self.naytto, (0, 0, 0), (2, self.korkeus - 19, 102, 17))
