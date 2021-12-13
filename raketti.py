@@ -48,7 +48,7 @@ class Peli:
         self.voimanlisays = False
         self.laukaisu = False
         self.pisteet = 0
-        self.aikaa_jaljella = 20 * FPS
+        self.aikaa_jaljella = 20
 
     def arvo_uusi_juttu(self):        
         self.jutun_kulma = 0
@@ -85,8 +85,9 @@ class Peli:
 
     def pelilogiikka(self):
         if self.aikaa_jaljella > 0:
-            self.aikaa_jaljella -= 1
+            self.aikaa_jaljella -= 1/FPS
         else:
+            self.aikaa_jaljella = 0
             return
 
         if self.hiiren_nappi_pohjassa:
@@ -119,7 +120,7 @@ class Peli:
             (self.raketin_sijainti[1] - self.jutun_sijainti[1])**2)
         if etaisyys_2 < 10000:
             self.pisteet += 1
-            self.aikaa_jaljella += 2 * FPS
+            self.aikaa_jaljella += 2
             self.arvo_uusi_juttu()
 
     def renderointi(self):
@@ -151,7 +152,7 @@ class Peli:
         self.naytto.blit(teksti_kuva, (self.leveys - teksti_kuva.get_width() - 10, 10))
         # Aika
         fontti = pygame.font.Font("font/SyneMono-Regular.ttf", 32)
-        teksti_kuva = fontti.render(f"Aika:{self.aikaa_jaljella:3}", True, (128, 0, 128))
+        teksti_kuva = fontti.render(f"Aika:{self.aikaa_jaljella:6.1f}", True, (128, 0, 128))
         self.naytto.blit(teksti_kuva, (10, 10))
         # Loppu teksti
         if self.aikaa_jaljella <= 0:
