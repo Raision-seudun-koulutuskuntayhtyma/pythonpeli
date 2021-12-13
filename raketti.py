@@ -39,7 +39,7 @@ class Peli:
         self.juttu_iso = pygame.image.load("astronautti.png")
         self.juttu_pieni = pygame.transform.rotozoom(self.juttu_iso, 0, 0.125)
         self.raketin_kulma = 0
-        self.pyorimisvauhti = 0
+        self.raketin_pyorimisvauhti = 0
         self.raketin_sijainti = (400, 300)
         self.jutun_sijainti = (randint(0, self.leveys), randint(0, self.korkeus))
         self.vauhti = 0
@@ -59,9 +59,9 @@ class Peli:
         # Näppäimen painaminen alas ------------------------------
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                self.pyorimisvauhti = 3
+                self.raketin_pyorimisvauhti = 3
             elif event.key == pygame.K_RIGHT:
-                self.pyorimisvauhti = -3
+                self.raketin_pyorimisvauhti = -3
             elif event.key == pygame.K_SPACE:
                 self.voimanlisays = True
         # Näppäimen nosto ylös  ----------------------------------
@@ -71,7 +71,7 @@ class Peli:
             elif event.key == pygame.K_F11:
                 self.vaihda_kokoruututila()
             elif event.key in (pygame.K_LEFT, pygame.K_RIGHT):
-                self.pyorimisvauhti = 0
+                self.raketin_pyorimisvauhti = 0
             elif event.key == pygame.K_SPACE:
                 self.voimanlisays = False
                 self.laukaisu = True           
@@ -80,8 +80,8 @@ class Peli:
         if self.hiiren_nappi_pohjassa:
             self.raketin_sijainti = pygame.mouse.get_pos()
 
-        if self.pyorimisvauhti != 0:
-            self.raketin_kulma = (self.raketin_kulma + self.pyorimisvauhti) % 360
+        if self.raketin_pyorimisvauhti != 0:
+            self.raketin_kulma = (self.raketin_kulma + self.raketin_pyorimisvauhti) % 360
 
         if self.voimanlisays:
             self.voima = min(self.voima + 2, 100)
