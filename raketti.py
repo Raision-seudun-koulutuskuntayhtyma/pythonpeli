@@ -54,7 +54,7 @@ class Peli:
         self.aikaa_jaljella = 20
 
     def arvo_uusi_juttu(self):        
-        self.jutun_kulma = 0
+        self.jutun_kulma = 360 * random()
         self.jutun_pyorimisvauhti = 2 * (random() - 0.5)
         self.jutun_sijainti = (randint(0, self.leveys), randint(0, self.korkeus))
 
