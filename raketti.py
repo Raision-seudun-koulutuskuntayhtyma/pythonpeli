@@ -1,4 +1,5 @@
 import math
+from random import randint
 
 import pygame
 
@@ -35,9 +36,12 @@ class Peli:
             self.nayton_koko, pygame.HWSURFACE | pygame.DOUBLEBUF)
         self.raketti_iso = pygame.image.load("rocket_883.png")
         self.raketti_pieni = pygame.transform.rotozoom(self.raketti_iso, 0, 0.25)
+        self.juttu_iso = pygame.image.load("astronautti.png")
+        self.juttu_pieni = pygame.transform.rotozoom(self.juttu_iso, 0, 0.125)
         self.kulma = 0
         self.pyorimisvauhti = 0
         self.raketin_sijainti = (400, 300)
+        self.jutun_sijainti = (randint(0, self.leveys), randint(0, self.korkeus))
         self.vauhti = 0
         self.hiiren_nappi_pohjassa = False
         self.voima = 0
@@ -96,12 +100,20 @@ class Peli:
             self.vauhti *= 0.97
 
     def renderointi(self):
+        # Tausta
         self.naytto.fill(TAUSTAVARI)
+        # Juttu
+        kuva = pygame.transform.rotozoom(self.juttu_pieni, self.kulma, 1)
+        laatikko = kuva.get_rect(center=self.jutun_sijainti)
+        self.naytto.blit(kuva, laatikko.topleft)
+        # Raketti
         kuva = pygame.transform.rotozoom(self.raketti_pieni, self.kulma, 1)
         laatikko = kuva.get_rect(center=self.raketin_sijainti)
         self.naytto.blit(kuva, laatikko.topleft)
+        # Voimapalkki
         pygame.draw.rect(self.naytto, (0, 0, 0), (2, self.korkeus - 19, 102, 17))
         pygame.draw.rect(self.naytto, (0, 255, 0), (3, self.korkeus - 18, self.voima, 15))
+        # Suuntapallo
         suuntapallo_x = self.leveys - 35
         suuntapallo_y = self.korkeus - 35
         suuntavektori_x = -30 * math.sin(self.kulma / 180 * math.pi)
@@ -110,6 +122,7 @@ class Peli:
         pygame.draw.line(self.naytto, (255, 0, 0),
                         (suuntapallo_x, suuntapallo_y),
                         (suuntapallo_x + suuntavektori_x, suuntapallo_y + suuntavektori_y))
+        # Päivitä ruutu
         pygame.display.flip()
         self.kello.tick(60)  # 60 fps (frames per second)
 
