@@ -38,6 +38,9 @@ class Peli:
         self.raketti_pieni = pygame.transform.rotozoom(self.raketti_iso, 0, 0.25)
         self.juttu_iso = pygame.image.load("astronautti.png")
         self.juttu_pieni = pygame.transform.rotozoom(self.juttu_iso, 0, 0.25)
+        self.pelimuuttujien_alustus()
+
+    def pelimuuttujien_alustus(self):
         self.raketin_kulma = 0
         self.raketin_pyorimisvauhti = 0
         self.raketin_sijainti = (400, 300)
@@ -75,6 +78,8 @@ class Peli:
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_ESCAPE:
                 self.ajossa = False
+            elif event.key == pygame.K_F2:
+                self.pelimuuttujien_alustus()
             elif event.key == pygame.K_F11:
                 self.vaihda_kokoruututila()
             elif event.key in (pygame.K_LEFT, pygame.K_RIGHT):
