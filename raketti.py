@@ -75,19 +75,20 @@ class Peli:
             self.kulma = (self.kulma + self.pyorimisvauhti) % 360
 
         if self.voimanlisays:
-            self.voima = min(self.voima + 1, 100)
+            self.voima = min(self.voima + 2, 100)
 
         if self.laukaisu:
-            self.vauhti = self.voima
+            self.vauhti = self.voima ** 2 / 200.0
             self.voima = 0
             self.laukaisu = False
 
-        if self.vauhti != 0:
+        if self.vauhti > 0.1:
             vauhti_x = -self.vauhti * math.sin(self.kulma / 180 * math.pi)
             vauhti_y = -self.vauhti * math.cos(self.kulma / 180 * math.pi)
             uusi_x = self.sijainti[0] + vauhti_x
             uusi_y = self.sijainti[1] + vauhti_y
             self.sijainti = (uusi_x, uusi_y)
+            self.vauhti *= 0.97
 
     def renderointi(self):
         self.naytto.fill(TAUSTAVARI)
