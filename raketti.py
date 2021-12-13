@@ -47,6 +47,7 @@ class Peli:
         self.voima = 0
         self.voimanlisays = False
         self.laukaisu = False
+        self.pisteet = 0
 
     def arvo_uusi_juttu(self):        
         self.jutun_kulma = 0
@@ -111,6 +112,7 @@ class Peli:
             (self.raketin_sijainti[0] - self.jutun_sijainti[0])**2 +
             (self.raketin_sijainti[1] - self.jutun_sijainti[1])**2)
         if etaisyys_2 < 5000:
+            self.pisteet += 1
             self.arvo_uusi_juttu()
 
     def renderointi(self):
@@ -136,6 +138,10 @@ class Peli:
         pygame.draw.line(self.naytto, (255, 0, 0),
                         (suuntapallo_x, suuntapallo_y),
                         (suuntapallo_x + suuntavektori_x, suuntapallo_y + suuntavektori_y))
+        # Pisteet
+        fontti = pygame.font.SysFont(None, 32)
+        teksti_kuva = fontti.render(f"Pisteet: {self.pisteet:4}", True, (128, 0, 128))
+        self.naytto.blit(teksti_kuva, (self.leveys - teksti_kuva.get_width() - 10, 10))
         # Päivitä ruutu
         pygame.display.flip()
         self.kello.tick(60)  # 60 fps (frames per second)
