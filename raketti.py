@@ -113,7 +113,7 @@ class Peli:
             self.voima = min(self.voima + 2, 100)
 
         if self.laukaisu:
-            self.vauhti = self.voima ** 2 / 200.0
+            self.vauhti += self.voima ** 2 / 200.0
             self.voima = 0
             self.laukaisu = False
 
