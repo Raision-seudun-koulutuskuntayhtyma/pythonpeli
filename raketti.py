@@ -1,5 +1,5 @@
 import math
-from random import randint
+from random import randint, random
 
 import pygame
 
@@ -41,6 +41,8 @@ class Peli:
         self.raketin_kulma = 0
         self.raketin_pyorimisvauhti = 0
         self.raketin_sijainti = (400, 300)
+        self.jutun_kulma = 0
+        self.jutun_pyorimisvauhti = random() - 0.5
         self.jutun_sijainti = (randint(0, self.leveys), randint(0, self.korkeus))
         self.vauhti = 0
         self.hiiren_nappi_pohjassa = False
@@ -83,6 +85,9 @@ class Peli:
         if self.raketin_pyorimisvauhti != 0:
             self.raketin_kulma = (self.raketin_kulma + self.raketin_pyorimisvauhti) % 360
 
+        if self.jutun_pyorimisvauhti != 0:
+            self.jutun_kulma = (self.jutun_kulma + self.jutun_pyorimisvauhti) % 360
+
         if self.voimanlisays:
             self.voima = min(self.voima + 2, 100)
 
@@ -103,7 +108,7 @@ class Peli:
         # Tausta
         self.naytto.fill(TAUSTAVARI)
         # Juttu
-        kuva = pygame.transform.rotozoom(self.juttu_pieni, self.raketin_kulma, 1)
+        kuva = pygame.transform.rotozoom(self.juttu_pieni, self.jutun_kulma, 1)
         laatikko = kuva.get_rect(center=self.jutun_sijainti)
         self.naytto.blit(kuva, laatikko.topleft)
         # Raketti
