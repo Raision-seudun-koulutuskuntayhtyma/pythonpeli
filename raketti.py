@@ -35,15 +35,15 @@ class Peli:
         self.kulma = 0
         self.pyorimisvauhti = 0
         self.sijainti = (400, 300)
-        self.nappi_pohjassa = False
+        self.hiiren_nappi_pohjassa = False
 
     def tapahtuma(self, event):
         if event.type == pygame.QUIT:
             self.ajossa = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            self.nappi_pohjassa = True
+            self.hiiren_nappi_pohjassa = True
         elif event.type == pygame.MOUSEBUTTONUP:
-            self.nappi_pohjassa = False
+            self.hiiren_nappi_pohjassa = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 self.pyorimisvauhti = 3
@@ -54,7 +54,7 @@ class Peli:
                 self.pyorimisvauhti = 0
 
     def pelilogiikka(self):
-        if self.nappi_pohjassa:
+        if self.hiiren_nappi_pohjassa:
             self.sijainti = pygame.mouse.get_pos()
         if self.pyorimisvauhti != 0:
             self.kulma = (self.kulma + self.pyorimisvauhti) % 360
