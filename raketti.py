@@ -37,7 +37,7 @@ class Peli:
         self.raketti_pieni = pygame.transform.rotozoom(self.raketti_iso, 0, 0.25)
         self.kulma = 0
         self.pyorimisvauhti = 0
-        self.sijainti = (400, 300)
+        self.raketin_sijainti = (400, 300)
         self.vauhti = 0
         self.hiiren_nappi_pohjassa = False
         self.voima = 0
@@ -74,7 +74,7 @@ class Peli:
 
     def pelilogiikka(self):
         if self.hiiren_nappi_pohjassa:
-            self.sijainti = pygame.mouse.get_pos()
+            self.raketin_sijainti = pygame.mouse.get_pos()
 
         if self.pyorimisvauhti != 0:
             self.kulma = (self.kulma + self.pyorimisvauhti) % 360
@@ -90,15 +90,15 @@ class Peli:
         if self.vauhti > 0.1:
             vauhti_x = -self.vauhti * math.sin(self.kulma / 180 * math.pi)
             vauhti_y = -self.vauhti * math.cos(self.kulma / 180 * math.pi)
-            uusi_x = self.sijainti[0] + vauhti_x
-            uusi_y = self.sijainti[1] + vauhti_y
-            self.sijainti = (uusi_x, uusi_y)
+            uusi_x = self.raketin_sijainti[0] + vauhti_x
+            uusi_y = self.raketin_sijainti[1] + vauhti_y
+            self.raketin_sijainti = (uusi_x, uusi_y)
             self.vauhti *= 0.97
 
     def renderointi(self):
         self.naytto.fill(TAUSTAVARI)
         kuva = pygame.transform.rotozoom(self.raketti_pieni, self.kulma, 1)
-        laatikko = kuva.get_rect(center=self.sijainti)
+        laatikko = kuva.get_rect(center=self.raketin_sijainti)
         self.naytto.blit(kuva, laatikko.topleft)
         pygame.draw.rect(self.naytto, (0, 0, 0), (2, self.korkeus - 19, 102, 17))
         pygame.draw.rect(self.naytto, (0, 255, 0), (3, self.korkeus - 18, self.voima, 15))
