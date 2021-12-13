@@ -33,6 +33,7 @@ class Peli:
         self.kuva_iso = pygame.image.load("rocket_883.png")
         self.kuva_pieni = pygame.transform.rotozoom(self.kuva_iso, 0, 0.25)
         self.kulma = 0
+        self.pyorimisvauhti = 0
         self.sijainti = (400, 300)
         self.nappi_pohjassa = False
 
@@ -43,11 +44,20 @@ class Peli:
             self.nappi_pohjassa = True
         elif event.type == pygame.MOUSEBUTTONUP:
             self.nappi_pohjassa = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                self.pyorimisvauhti = 3
+            elif event.key == pygame.K_RIGHT:
+                self.pyorimisvauhti = -3
+        elif event.type == pygame.KEYUP:
+            if event.key in (pygame.K_LEFT, pygame.K_RIGHT):
+                self.pyorimisvauhti = 0
 
     def pelilogiikka(self):
         if self.nappi_pohjassa:
             self.sijainti = pygame.mouse.get_pos()
-        self.kulma = (self.kulma - 3) % 360
+        if self.pyorimisvauhti != 0:
+            self.kulma = (self.kulma + self.pyorimisvauhti) % 360
 
     def renderointi(self):
         self.naytto.fill(TAUSTAVARI)
