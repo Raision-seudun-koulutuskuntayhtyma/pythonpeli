@@ -92,16 +92,19 @@ class Peli:
                 self.laukaisu = True
 
     def pelilogiikka(self):
-        if self.aikaa_jaljella > 0:
-            self.aikaa_jaljella -= 1/FPS
-            aikaa_vahennyksesta = self.edellinen_vahennys - self.aikaa_jaljella
-            if aikaa_vahennyksesta >= 5:
-                self.pisteet -= 1
-                self.edellinen_vahennys = self.aikaa_jaljella
-        else:
+        # Pelin loppuminen
+        if self.aikaa_jaljella <= 0:
             self.aikaa_jaljella = 0
             return
 
+        # Aika ja pistevähennys
+        self.aikaa_jaljella -= 1/FPS
+        aikaa_vahennyksesta = self.edellinen_vahennys - self.aikaa_jaljella
+        if aikaa_vahennyksesta >= 5:
+            self.pisteet -= 1
+            self.edellinen_vahennys = self.aikaa_jaljella
+
+        # Teleporttaus hiirellä
         if self.hiiren_nappi_pohjassa:
             self.raketin_sijainti = pygame.mouse.get_pos()
 
@@ -110,25 +113,28 @@ class Peli:
         self.raketin_kulma = (self.raketin_kulma + self.raketin_pyorimisvauhti) % 360
         self.raketin_pyorimisvauhti *= 0.88
 
-        if self.jutun_pyorimisvauhti != 0:
-            self.jutun_kulma = (self.jutun_kulma + self.jutun_pyorimisvauhti) % 360
+        # Jutun pyöriminen
+        self.jutun_kulma = (self.jutun_kulma + self.jutun_pyorimisvauhti) % 360
 
+        # Rakettimoottorin voiman lisäys
         if self.voimanlisays:
             self.voima = min(self.voima + 2, 100)
 
+        # Rakettimoottorin laukaisu
         if self.laukaisu:
             self.vauhti += self.voima ** 2 / 200.0
             self.voima = 0
             self.laukaisu = False
 
-        if self.vauhti > 0.1:
-            vauhti_x = -self.vauhti * math.sin(self.raketin_kulma / 180 * math.pi)
-            vauhti_y = -self.vauhti * math.cos(self.raketin_kulma / 180 * math.pi)
-            uusi_x = self.raketin_sijainti[0] + vauhti_x
-            uusi_y = self.raketin_sijainti[1] + vauhti_y
-            self.raketin_sijainti = (uusi_x, uusi_y)
-            self.vauhti *= 0.99
+        # Raketin liike
+        vauhti_x = -self.vauhti * math.sin(self.raketin_kulma / 180 * math.pi)
+        vauhti_y = -self.vauhti * math.cos(self.raketin_kulma / 180 * math.pi)
+        uusi_x = self.raketin_sijainti[0] + vauhti_x
+        uusi_y = self.raketin_sijainti[1] + vauhti_y
+        self.raketin_sijainti = (uusi_x, uusi_y)
+        self.vauhti *= 0.99
 
+        # Raketin osuminen juttuun
         etaisyys_2 = (
             (self.raketin_sijainti[0] - self.jutun_sijainti[0])**2 +
             (self.raketin_sijainti[1] - self.jutun_sijainti[1])**2)
