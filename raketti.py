@@ -36,28 +36,50 @@ class Peli:
         self.pyorimisvauhti = 0
         self.sijainti = (400, 300)
         self.hiiren_nappi_pohjassa = False
+        self.voima = 0
+        self.voimanlisays = False
+        self.laukaisu = False
 
     def tapahtuma(self, event):
         if event.type == pygame.QUIT:
             self.ajossa = False
+        # Hiiren tapahtumat --------------------------------------
         elif event.type == pygame.MOUSEBUTTONDOWN:
             self.hiiren_nappi_pohjassa = True
         elif event.type == pygame.MOUSEBUTTONUP:
             self.hiiren_nappi_pohjassa = False
+        # Näppäimen painaminen alas ------------------------------
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 self.pyorimisvauhti = 3
             elif event.key == pygame.K_RIGHT:
                 self.pyorimisvauhti = -3
+            elif event.key == pygame.K_SPACE:
+                self.voimanlisays = True
+        # Näppäimen nosto ylös  ----------------------------------
         elif event.type == pygame.KEYUP:
             if event.key in (pygame.K_LEFT, pygame.K_RIGHT):
                 self.pyorimisvauhti = 0
+            elif event.key == pygame.K_SPACE:
+                self.voimanlisays = False
+                self.laukaisu = True
 
     def pelilogiikka(self):
         if self.hiiren_nappi_pohjassa:
             self.sijainti = pygame.mouse.get_pos()
+
         if self.pyorimisvauhti != 0:
             self.kulma = (self.kulma + self.pyorimisvauhti) % 360
+
+        if self.voimanlisays:
+            self.voima += 1
+            if self.voima > 100:
+                self.voima = 100
+
+        if self.laukaisu:
+            print(f"Pam! {self.voima}")
+            self.voima = 0
+            self.laukaisu = False
 
     def renderointi(self):
         self.naytto.fill(TAUSTAVARI)
