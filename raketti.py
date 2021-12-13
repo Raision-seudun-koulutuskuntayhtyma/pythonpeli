@@ -44,6 +44,7 @@ class Peli:
     def pelimuuttujien_alustus(self):
         self.raketin_kulma = 0
         self.raketin_pyorimisvauhti = 0
+        self.raketin_pyorimisvauhti_impulssi = 0
         self.raketin_sijainti = (self.leveys / 2, self.korkeus / 2)
         self.arvo_uusi_juttu()
         self.vauhti = 0
@@ -71,9 +72,9 @@ class Peli:
         # Näppäimen painaminen alas ------------------------------
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                self.raketin_pyorimisvauhti = 3
+                self.raketin_pyorimisvauhti_impulssi = 1
             elif event.key == pygame.K_RIGHT:
-                self.raketin_pyorimisvauhti = -3
+                self.raketin_pyorimisvauhti_impulssi = -1
             elif event.key == pygame.K_SPACE:
                 self.voimanlisays = True
         # Näppäimen nosto ylös  ----------------------------------
@@ -85,7 +86,7 @@ class Peli:
             elif event.key == pygame.K_F11:
                 self.vaihda_kokoruututila()
             elif event.key in (pygame.K_LEFT, pygame.K_RIGHT):
-                self.raketin_pyorimisvauhti = 0
+                self.raketin_pyorimisvauhti_impulssi = 0
             elif event.key == pygame.K_SPACE:
                 self.voimanlisays = False
                 self.laukaisu = True
@@ -104,8 +105,10 @@ class Peli:
         if self.hiiren_nappi_pohjassa:
             self.raketin_sijainti = pygame.mouse.get_pos()
 
-        if self.raketin_pyorimisvauhti != 0:
-            self.raketin_kulma = (self.raketin_kulma + self.raketin_pyorimisvauhti) % 360
+        # Raketin pyöriminen
+        self.raketin_pyorimisvauhti += self.raketin_pyorimisvauhti_impulssi
+        self.raketin_kulma = (self.raketin_kulma + self.raketin_pyorimisvauhti) % 360
+        self.raketin_pyorimisvauhti *= 0.88
 
         if self.jutun_pyorimisvauhti != 0:
             self.jutun_kulma = (self.jutun_kulma + self.jutun_pyorimisvauhti) % 360
