@@ -139,8 +139,8 @@ class Peli:
                         (suuntapallo_x, suuntapallo_y),
                         (suuntapallo_x + suuntavektori_x, suuntapallo_y + suuntavektori_y))
         # Pisteet
-        fontti = pygame.font.SysFont(None, 32)
-        teksti_kuva = fontti.render(f"Pisteet: {self.pisteet:4}", True, (128, 0, 128))
+        fontti = pygame.font.Font("font/SyneMono-Regular.ttf", 32)
+        teksti_kuva = fontti.render(f"Pisteet:{self.pisteet:3}", True, (128, 0, 128))
         self.naytto.blit(teksti_kuva, (self.leveys - teksti_kuva.get_width() - 10, 10))
         # Päivitä ruutu
         pygame.display.flip()
