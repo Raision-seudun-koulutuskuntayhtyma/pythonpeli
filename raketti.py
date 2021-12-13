@@ -37,7 +37,7 @@ class Peli:
         self.raketti_iso = pygame.image.load("rocket_883.png")
         self.raketti_pieni = pygame.transform.rotozoom(self.raketti_iso, 0, 0.25)
         self.juttu_iso = pygame.image.load("astronautti.png")
-        self.juttu_pieni = pygame.transform.rotozoom(self.juttu_iso, 0, 0.125)
+        self.juttu_pieni = pygame.transform.rotozoom(self.juttu_iso, 0, 0.25)
         self.raketin_kulma = 0
         self.raketin_pyorimisvauhti = 0
         self.raketin_sijainti = (400, 300)
@@ -117,7 +117,7 @@ class Peli:
         etaisyys_2 = (
             (self.raketin_sijainti[0] - self.jutun_sijainti[0])**2 +
             (self.raketin_sijainti[1] - self.jutun_sijainti[1])**2)
-        if etaisyys_2 < 5000:
+        if etaisyys_2 < 10000:
             self.pisteet += 1
             self.aikaa_jaljella += 2 * FPS
             self.arvo_uusi_juttu()
